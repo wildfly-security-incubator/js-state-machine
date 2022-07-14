@@ -1,0 +1,30 @@
+{
+    "DEFAULT": {
+        "name": "Username",
+        "type": "text"
+    },
+    "ashpan": [
+        {
+            "name": "password",
+            "type": "password",
+            "order": 1
+        },
+        {
+            "name": "Multi Factor Code",
+            "type": "mfa",
+            "order": 2
+        }
+    ],
+    "second_user":[
+        {
+            "name": "health card version number",
+            "type": "text",
+            "order": 2
+        },
+        {
+            "name": "health card number",
+            "type": "number",
+            "order": 1
+        }
+    ]
+}

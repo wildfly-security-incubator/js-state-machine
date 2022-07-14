@@ -1,0 +1,81 @@
+= JavaScript State Machine Documentation
+
+== Running the REST API
+. Start the WildFly 27 standalone server
+.. `WILDFLY_HOME/bin/standalone.sh`
+
+. Copy the admin_console_config.json file from the
+javascript-state-machine repository to `WILDFLY_HOME/standalone/configuration/admin_console_config.json`
+. Go to the root of the backend directory and deploy the application
+.. `mvn package wildfly:deploy`
+. Just to test the REST API is configured, try to access
+http://localhost:8080/js-state-machine-api/rest/public[+++http://localhost:8080/js-state-machine-api/rest/public+++] and ensure that you’re receiving a 200 code
+. Rest endpoints are now configured
+
+== Running the Frontend Client
+
+. Install NodeJS
+. Navigate to the frontend directory, and run `npm install`
+. Now run `npm start`, this should start and open a window with the web
+application, if not, go to
+http://localhost:3000/javascript-state-machine[+++http://localhost:3000/javascript-state-machine+++]
+and you should see the login page
+. Web App is now ready to use
+
+== How does it work
+
+NOTE: {HOST} =
+http://localhost:8080/js-state-machine-api/rest[+++http://localhost:8080/js-state-machine-api/rest+++]
+
+. The structure of the configuration file looks like this
+
+[source,json]
+====
+    {
+        "DEFAULT": {
+            "name": "Username",
+            "type": "text"
+        },
+        "ashpan": [
+            {
+                "name": "password",
+                "type": "password",
+                "order": 1
+            },
+            {
+                "name": "Multi Factor Code",
+                "type": "mfa",
+                "order": 2
+            }
+            ],
+            "second_user":[
+                {
+                    "name": "health card version number",
+                    "type": "text",
+                    "order": 2
+                },
+                {
+                    "name": "health card number",
+                    "type": "number",
+                    "order": 1
+                }
+        ]
+    }
+====
+. *GET* \{HOST}/default/
+.. The first thing that gets called is the “DEFAULT” key, this prompts the
+web app to display the first input for users to enter, in most cases
+this would be their username/email. The type field is used to configure
+what inputs are permitted on the client form
+. *GET* \{HOST}/username/\{username}/
+.. From there, once a username is submitted, another API call is made with
+the “DEFAULT input” as a parameter. This call will return an array of
+inputs, this array can be of any size with a minimum of 1 (e.g. a
+password prompt). Each object in the array contains the name of the
+field, the type of input, and the order of the inputs so that it is
+rendered correctly on the client.
+. *POST* \{HOST}/login/\{username}
+.. Once the client inputs have all been entered and the submit button is
+clicked, the data can be sent to Elytron to be verified for login. It
+will be submitted to the server as a JSON string of key pairs. The key
+will be the field name and the value will be the user's inputted value.
