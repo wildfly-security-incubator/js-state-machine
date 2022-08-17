@@ -16,7 +16,6 @@
  */
 package org.jboss.quickstarts.jaxrsjwt.rs;
 
-// import java.util.HashMap;
 import java.util.logging.Logger;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
@@ -39,7 +38,7 @@ import java.io.FileReader;
 public class TestRest {
 
     private static final Logger log = Logger.getLogger(TestRest.class.getName());
-
+    private final String CONFIG_FILE_PATH = "standalone/configuration/admin_console_config.json";
     //Security constraints are defined in web.xml
 
     @GET
@@ -52,7 +51,7 @@ public class TestRest {
     @Path("/default")
     public Response getDefaultInput() {
        JSONParser parser = new JSONParser();
-       try (FileReader reader = new FileReader("standalone/configuration/config.json")){
+       try (FileReader reader = new FileReader(CONFIG_FILE_PATH)){
            JSONObject configFile = (JSONObject) parser.parse(reader);
            Object defaultInput = configFile.get("DEFAULT");
         return Response.ok(defaultInput.toString()).build();
@@ -65,7 +64,7 @@ public class TestRest {
    @Path("/username/{username}")
    public Response getFields(@PathParam("username") String username) {
         JSONParser parser = new JSONParser();
-        try (FileReader reader = new FileReader("standalone/configuration/config.json")){
+        try (FileReader reader = new FileReader(CONFIG_FILE_PATH)){
             JSONObject configFile = (JSONObject) parser.parse(reader);
             Object user = configFile.get(username);
             return Response.ok(user.toString()).build();

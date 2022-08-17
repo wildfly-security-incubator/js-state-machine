@@ -4,7 +4,8 @@
 . Start the WildFly 27 standalone server
 .. `WILDFLY_HOME/bin/standalone.sh`
 
-. Copy the admin_console_config.json file from the
+
+. Copy the link:admin_console_config.json[admin_console_config.json] file from the
 javascript-state-machine repository to `WILDFLY_HOME/standalone/configuration/admin_console_config.json`
 . Go to the root of the backend directory and deploy the application
 .. `mvn package wildfly:deploy`
@@ -21,6 +22,8 @@ application, if not, go to
 http://localhost:3000/javascript-state-machine[+++http://localhost:3000/javascript-state-machine+++]
 and you should see the login page
 . Web App is now ready to use
+
+NOTE: The current implementation of the REST API and the frontend client are hosted on two different domains/ports. This causes an issue as they are not on the same origin/are Cross Origin. This breaks the CORS policy and should be fixed in the future. For development purposes, this is not a big deal, and can be combatted https://mybrowseraddon.com/access-control-allow-origin.html[by using this extension as a workaround]
 
 == How does it work
 
